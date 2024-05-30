@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rate My Jobs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Rate My Jobs</h1>
+    <ul>
+        {% for job in jobs %}
+        <li><a href="{{ url_for('job', job_id=job.id) }}">{{ job.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

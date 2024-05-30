@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ job.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ job.title }}</h1>
+    <p>{{ job.description }}</p>
+    <h2>Reviews</h2>
+    <ul>
+        {% for review in job.reviews %}
+        <li>Rating: {{ review.rating }} - {{ review.comment }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('submit_review', job_id=job.id) }}">Submit a review</a>
+</body>
+</html>
