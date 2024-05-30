@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
+
 
 # User Model
 class User(db.Model):
@@ -71,6 +72,24 @@ def login():
             session['user_id'] = user.id
             return redirect(url_for('index'))
     return render_template('login.html')
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    # Extract data from the request
+    username = request.json.get('username')
+    password = request.json.get('password')
+
+    # Create a new user object
+    new_user = User(username=username, password=password)
+
+    # Add the user object to the database session
+    db.session.add(new_user)
+
+    # Commit the transaction to save the changes to the database
+    db.session.commit()
+
+    # Return a JSON response indicating success
+    return jsonify({'message': 'User added successfully'}), 201
 
 if __name__ == '__main__':
     app.run(debug=True)
