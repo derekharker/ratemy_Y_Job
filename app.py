@@ -1,95 +1,66 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+# app.py
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from extensions import db
+from models import Job, Review
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db = SQLAlchemy(app)
-
-
-# User Model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(150), nullable=False)
-
-# Job Model
-class Job(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    reviews = db.relationship('Review', backref='job', lazy=True)
-
-# Review Model
-class Review(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    rating = db.Column(db.Integer, nullable=False)
-    comment = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
+db.init_app(app)
 
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/job')
+def job():
+    return render_template('job.html')
+
+@app.route('/search')
+def search():
     jobs = Job.query.all()
-    return render_template('index.html', jobs=jobs)
+    return render_template('search.html', jobs=jobs)
 
-@app.route('/job/<int:job_id>')
-def job(job_id):
-    job = Job.query.get_or_404(job_id)
-    return render_template('job.html', job=job)
+@app.route('/search_results', methods=['GET'])
+def search_results():
+    job_name = request.args.get('job_name')
+    jobs = Job.query.filter(Job.title.ilike(f'%{job_name}%')).all()
+    reviews = Review.query.filter(Review.job_id.in_([job.id for job in jobs])).all()
+    return render_template('search_results.html', jobs=jobs, reviews=reviews)
 
-@app.route('/submit_review/<int:job_id>', methods=['GET', 'POST'])
-def submit_review(job_id):
+
+@app.route('/review', methods=['GET', 'POST'])
+def review():
     if request.method == 'POST':
-        rating = request.form.get('rating')
-        comment = request.form.get('comment')
-        new_review = Review(rating=rating, comment=comment, user_id=session['user_id'], job_id=job_id)
-        db.session.add(new_review)
-        db.session.commit()
-        return redirect(url_for('job', job_id=job_id))
-    return render_template('submit_review.html', job_id=job_id)
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        hashed_password = generate_password_hash(password, method='sha256')
-        new_user = User(username=username, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
-    return render_template('register.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
-            session['user_id'] = user.id
-            return redirect(url_for('index'))
-    return render_template('login.html')
-
-@app.route('/add_user', methods=['POST'])
-def add_user():
-    # Extract data from the request
-    username = request.json.get('username')
-    password = request.json.get('password')
-
-    # Create a new user object
-    new_user = User(username=username, password=password)
-
-    # Add the user object to the database session
-    db.session.add(new_user)
-
-    # Commit the transaction to save the changes to the database
-    db.session.commit()
-
-    # Return a JSON response indicating success
-    return jsonify({'message': 'User added successfully'}), 201
+        job_title = request.form['job_title']
+        new_job_title = request.form.get('new_job_title')
+        rating = request.form['rating']
+        comment = request.form['comment']
+        
+        if job_title == 'new' and new_job_title:
+            job = Job.query.filter_by(title=new_job_title).first()
+            if not job:
+                job = Job(title=new_job_title, description="Description not provided.")
+                db.session.add(job)
+                db.session.commit()
+        else:
+            job = Job.query.filter_by(title=job_title).first()
+        
+        if job:
+            # Create a new review instance
+            new_review = Review(job_id=job.id, rating=rating, comment=comment)
+            db.session.add(new_review)
+            db.session.commit()
+            return "Form submitted successfully"
+        else:
+            return "Job not found", 404
+    else:
+        # Render the review form with job options
+        jobs = Job.query.all()
+        return render_template('review.html', jobs=jobs)
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Ensure tables are created
     app.run(debug=True)
