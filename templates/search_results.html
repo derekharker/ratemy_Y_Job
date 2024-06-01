@@ -16,7 +16,13 @@
                 <ul>
                     {% for review in reviews %}
                         {% if review.job_id == job.id %}
-                            <li>{{ review.comment }}</li>
+                            <li>
+                                <strong>Department:</strong> {{ review.department }}<br>
+                                <strong>Overall Rating:</strong> {{ review.rating }}<br>
+                                <strong>Supervisor Rating:</strong> {{ review.supervisor_rating }}<br>
+                                <strong>Pay:</strong> ${{ review.pay }}<br>
+                                <strong>Comment:</strong> {{ review.comment }}
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>

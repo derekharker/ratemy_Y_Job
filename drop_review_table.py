@@ -10,6 +10,7 @@ db.init_app(app)
 def drop_review_table():
     with app.app_context():
         Review.__table__.drop(db.engine)
+        db.create_all()  # Recreate all tables
 
 if __name__ == '__main__':
     drop_review_table()
