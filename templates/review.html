@@ -3,171 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Review</title>
-    <!-- Include Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <title>Rate My Job Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Submit Review</h1>
-    <form action="/review" method="POST">
-
+    <h1>Rate My Job Review</h1>
+    <form method="POST" action="/review">
         <label for="job_title">Job Title:</label>
-        <select id="job_title" name="job_title" class="select2" required>
-            <option value="">Select or type...</option> <!-- Default option -->
+        <select name="job_title" id="job_title" required>
             {% for job in jobs %}
                 <option value="{{ job }}">{{ job }}</option>
             {% endfor %}
+            <option value="Other">Other</option>
         </select>
-
+        <input type="text" name="custom_job_title" id="custom_job_title" placeholder="Enter Job Title" style="display:none;"/>
 
         <label for="department">Department:</label>
-        <select id="department" name="department" class="select2" required>
-            <option value="">Select or type...</option> <!-- Default option -->
-            {% for dept in departments %}
-                <option value="{{ dept }}">{{ dept }}</option>
+        <select name="department" id="department" required>
+            {% for department in departments %}
+                <option value="{{ department }}">{{ department }}</option>
             {% endfor %}
         </select>
 
-        <label for="rating">Overall Rating:</label>
-        <input type="number" id="rating" name="rating" min="1" max="5" required>
+        <label for="rating">Rating:</label>
+        <input type="number" name="rating" id="rating" min="1" max="5" required>
 
         <label for="supervisor_rating">Supervisor Rating:</label>
-        <input type="number" id="supervisor_rating" name="supervisor_rating" min="1" max="5" required>
-
-        <br> <!-- Add a line break -->
-
-        <label for="pay">Pay ($):</label>
-        <input type="number" step="0.01" id="pay" name="pay" required>
+        <input type="number" name="supervisor_rating" id="supervisor_rating" min="1" max="5" required>
 
         <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment" required></textarea>
+        <textarea name="comment" id="comment" required></textarea>
 
-        <br> <!-- Add a line break -->
-
-        <label for="tags">Tags:</label><br>
-{% for tag in tags %}
-    <button type="button" class="tag-button" data-tag="{{ tag }}">{{ tag }}</button>
-{% endfor %}
-
-<!-- Hidden input field to store selected tags -->
-<input type="hidden" id="selected_tags" name="selected_tags" value="">
-
-<!-- JavaScript to handle tag selection -->
-<script>
-    $(document).ready(function() {
-        var selectedTags = [];
-
-        // Function to toggle the selected state of a tag button
-        function toggleTag(tag) {
-            var index = selectedTags.indexOf(tag);
-            if (index === -1) {
-                selectedTags.push(tag);
-                $('#hidden-tags').val(selectedTags.join(',')); // Update the hidden input field
-                $('#tag-' + tag).addClass('selected'); // Add selected class to the button
-            } else {
-                selectedTags.splice(index, 1);
-                $('#hidden-tags').val(selectedTags.join(',')); // Update the hidden input field
-                $('#tag-' + tag).removeClass('selected'); // Remove selected class from the button
-            }
-        }
-
-        // Event listener for tag button click
-        $('.tag-btn').click(function() {
-            var tag = $(this).data('tag');
-            toggleTag(tag);
-        });
-    });
-</script>
-
-
-<!-- CSS for tag button styling -->
-<style>
-    .tag-button {
-        margin-right: 5px;
-        margin-bottom: 5px;
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s; /* Add transition effect */
-    }
-
-    .tag-button.selected {
-        background-color: #007bff;
-        color: #000; /* Change text color */
-    }
-</style>
-
-
-
-        <!-- Hidden fields to store new job titles and departments -->
-        <input type="hidden" id="new_job_titles" name="new_job_titles">
-        <input type="hidden" id="new_departments" name="new_departments">
+        <label for="pay">Pay:</label>
+        <input type="number" name="pay" id="pay" step="0.01" required>
 
         <button type="submit">Submit Review</button>
     </form>
-
-    <!-- Include jQuery and Select2 JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
     <script>
-        $(document).ready(function() {
-            var newJobTitles = [];
-            var newDepartments = [];
-
-            function formatOption(option) {
-                if (!option.id) {
-                    return option.text;
-                }
-                var $option = $(
-                    '<span>' + option.text + '</span>'
-                );
-                return $option;
+        document.getElementById('job_title').addEventListener('change', function() {
+            var customJobTitle = document.getElementById('custom_job_title');
+            if (this.value === 'Other') {
+                customJobTitle.style.display = 'block';
+                customJobTitle.required = true;
+            } else {
+                customJobTitle.style.display = 'none';
+                customJobTitle.required = false;
             }
-
-            $('.select2').select2({
-                tags: true, // Enable tagging
-                placeholder: "Select or type...", // Placeholder text
-                allowClear: true, // Allow clearing the selection
-                templateResult: formatOption,
-                createTag: function(params) {
-                    var term = $.trim(params.term);
-
-                    if (term === 'Other') {
-                        return null;
-                    }
-
-                    return {
-                        id: term,
-                        text: term,
-                        newTag: true // Add additional parameters
-                    };
-                },
-                templateSelection: formatOption,
-                matcher: function(params, data) {
-                    var originalMatcher = $.fn.select2.defaults.defaults.matcher;
-                    var result = originalMatcher(params, data);
-
-                    if (result && data.text === 'Other') {
-                        return data;
-                    }
-
-                    return result;
-                }
-            }).on('select2:select', function(e) {
-                var data = e.params.data;
-
-                if (data.newTag) {
-                    if (this.id === 'job_title') {
-                        newJobTitles.push(data.text);
-                        $('#new_job_titles').val(newJobTitles.join(','));
-                    } else if (this.id === 'department') {
-                        newDepartments.push(data.text);
-                        $('#new_departments').val(newDepartments.join(','));
-                    }
-                }
-            });
         });
     </script>
 </body>
