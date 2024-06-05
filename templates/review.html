@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rate My Job Review</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <h1>Rate My Job Review</h1>
     <form method="POST" action="/review">
         <label for="job_title">Job Title:</label>
-        <select name="job_title" id="job_title" required>
+        <select class="js-example-basic-single" name="job_title" id="job_title" required>
+            <option value="" selected disabled>Select or type...</option> <!-- Placeholder option -->
             {% for job in jobs %}
                 <option value="{{ job }}">{{ job }}</option>
             {% endfor %}
-            <option value="Other">Other</option>
         </select>
-        <input type="text" name="custom_job_title" id="custom_job_title" placeholder="Enter Job Title" style="display:none;"/>
+
 
         <label for="department">Department:</label>
-        <select name="department" id="department" required>
+        <select class="js-example-basic-single" name="department" id="department" required>
+            <option value="" selected disabled>Select or type...</option> <!-- Placeholder option -->
             {% for department in departments %}
                 <option value="{{ department }}">{{ department }}</option>
             {% endfor %}
@@ -40,16 +42,14 @@
         <button type="submit">Submit Review</button>
     </form>
     
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
-        document.getElementById('job_title').addEventListener('change', function() {
-            var customJobTitle = document.getElementById('custom_job_title');
-            if (this.value === 'Other') {
-                customJobTitle.style.display = 'block';
-                customJobTitle.required = true;
-            } else {
-                customJobTitle.style.display = 'none';
-                customJobTitle.required = false;
-            }
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2({
+                tags: true,
+                placeholder: 'Select or type...'
+            });
         });
     </script>
 </body>

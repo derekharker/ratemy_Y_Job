@@ -85,11 +85,19 @@ def review():
         )
         db.session.add(new_review)
         db.session.commit()
-        return "Form submitted successfully"
+        return redirect("/review/success")
 
     else:
         # Render the review form with job titles and predefined departments
         return render_template('review.html', jobs=predefined_job_list, departments=predefined_departments)
+    
+@app.route('/review/success')
+def review_success():
+    return render_template('review_success.html')
+
+@app.route('/search')
+def search():
+    return render_template('search.html')
 
 if __name__ == '__main__':
     with app.app_context():
