@@ -63,3 +63,10 @@ button {
     font-weight: 400;
     line-height: normal;
 }
+
+#rectangle{
+    width: 1920px;
+    height: 710px;
+    flex-shrink: 0;
+    background: #0D579C;
+}

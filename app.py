@@ -73,7 +73,6 @@ def review():
         elif job_title == "Other":
             job_title = None
 
-        # Create a new review instance
         new_review = Review(
             job_id=job.id if job else None,
             job_title=job_title if job_title != "Other" else request.form['custom_job_title'],
