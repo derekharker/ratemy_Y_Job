@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate My Job Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <a href = '/'><svg width="350" height="350">
+        <image xlink:href="\static\Blue Logo V2.svg" width="350" height="350" />
+      </svg>
+    </a>
+    <h1>Rate My Job Review</h1>
+    <form method="POST" action="/review">
+        <label for="job_title">Job Title:</label>
+        <select class="js-example-basic-single" name="job_title" id="job_title" required>
+            <option value="" selected disabled>Select or type...</option> <!-- Placeholder option -->
+            {% for job in jobs %}
+                <option value="{{ job }}">{{ job }}</option>
+            {% endfor %}
+        </select>
+
+
+        <label for="department">Department:</label>
+        <select class="js-example-basic-single" name="department" id="department" required>
+            <option value="" selected disabled>Select or type...</option> <!-- Placeholder option -->
+            {% for department in departments %}
+                <option value="{{ department }}">{{ department }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="rating">Rating:</label>
+        <input type="number" name="rating" id="rating" min="1" max="5" required>
+
+        <label for="supervisor_rating">Supervisor Rating:</label>
+        <input type="number" name="supervisor_rating" id="supervisor_rating" min="1" max="5" required>
+
+        <label for="comment">Comment:</label>
+        <textarea name="comment" id="comment" required></textarea>
+
+        <label for="pay">Pay:</label>
+        <input type="number" name="pay" id="pay" step="0.01" required>
+
+        <button type="submit">Submit Review</button>
+    </form>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2({
+                tags: true,
+                placeholder: 'Select or type...'
+            });
+        });
+    </script>
+</body>
+</html>
