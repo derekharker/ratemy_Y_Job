@@ -6,11 +6,38 @@
     <title>Rate My Job Review</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .rating-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .rating-button, .supervisor-rating-button {
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 40px;
+            background-color: #f0f0f0; /* Light grey */
+            color: #333; /* Dark grey text */
+        }
+
+        .rating-buttons button.selected {
+            font-weight: bold;
+        }
+
+        .rating-1 { background-color: #FF6347; color: white; }
+        .rating-2 { background-color: #FFA500; color: white; }
+        .rating-3 { background-color: #FFD700; }
+        .rating-4 { background-color: #ADFF2F; }
+        .rating-5 { background-color: #32CD32; }
+    </style>
 </head>
 <body>
-    <a href = '/'><svg width="350" height="350">
-        <image xlink:href="\static\Blue Logo V2.svg" width="350" height="350" />
-      </svg>
+    <a href='/'>
+        <svg width="350" height="350">
+            <image xlink:href="\static\Blue Logo V2.svg" width="350" height="350" />
+        </svg>
     </a>
     <h1>Rate My Job Review</h1>
     <form method="POST" action="/review">
@@ -22,7 +49,6 @@
             {% endfor %}
         </select>
 
-
         <label for="department">Department:</label>
         <select class="js-example-basic-single" name="department" id="department" required>
             <option value="" selected disabled>Select or type...</option> <!-- Placeholder option -->
@@ -31,17 +57,30 @@
             {% endfor %}
         </select>
 
-        <label for="rating">Rating:</label>
-        <input type="number" name="rating" id="rating" min="1" max="5" required>
+        <label for="rating">Overall Rating:</label>
+        <div class="rating-buttons" id="rating">
+            {% for i in range(1, 6) %}
+                <button type="button" class="rating-button" data-rating="{{ i }}">{{ i }}</button>
+            {% endfor %}
+            <input type="hidden" name="rating" id="rating-input" required>
+        </div>
 
         <label for="supervisor_rating">Supervisor Rating:</label>
-        <input type="number" name="supervisor_rating" id="supervisor_rating" min="1" max="5" required>
+        <div class="rating-buttons" id="supervisor_rating">
+            {% for i in range(1, 6) %}
+                <button type="button" class="supervisor-rating-button" data-rating="{{ i }}">{{ i }}</button>
+            {% endfor %}
+            <input type="hidden" name="supervisor_rating" id="supervisor-rating-input" required>
+        </div>
 
         <label for="comment">Comment:</label>
         <textarea name="comment" id="comment" required></textarea>
 
         <label for="pay">Pay:</label>
-        <input type="number" name="pay" id="pay" step="0.01" required>
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input type="number" name="pay" id="pay" step="0.01" required>
+        </div>
 
         <button type="submit">Submit Review</button>
     </form>
@@ -54,6 +93,39 @@
                 tags: true,
                 placeholder: 'Select or type...'
             });
+
+            // Rating button click event
+            $('.rating-button').on('click', function() {
+                $('.rating-button').removeClass('selected');
+                $(this).addClass('selected');
+                $('#rating-input').val($(this).data('rating'));
+                updateRatingColors();
+            });
+
+            // Supervisor rating button click event
+            $('.supervisor-rating-button').on('click', function() {
+                $('.supervisor-rating-button').removeClass('selected');
+                $(this).addClass('selected');
+                $('#supervisor-rating-input').val($(this).data('rating'));
+                updateRatingColors();
+            });
+
+            // Update button colors based on selected rating
+            function updateRatingColors() {
+                var rating = $('#rating-input').val();
+                var supervisorRating = $('#supervisor-rating-input').val();
+                $('.rating-button').removeClass('rating-1 rating-2 rating-3 rating-4 rating-5');
+                $('.supervisor-rating-button').removeClass('rating-1 rating-2 rating-3 rating-4 rating-5');
+                if (rating) {
+                    $('.rating-button[data-rating="' + rating + '"]').addClass('selected rating-' + rating);
+                }
+                if (supervisorRating) {
+                    $('.supervisor-rating-button[data-rating="' + supervisorRating + '"]').addClass('selected rating-' + supervisorRating);
+                }
+            }
+
+            // Initial update of rating colors in case values are pre-set
+            updateRatingColors();
         });
     </script>
 </body>
