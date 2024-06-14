@@ -97,7 +97,8 @@ def review_success():
 
 @app.route('/search')
 def search():
-    return render_template('search.html')
+    jobs = Job.query.all()  # Fetch all jobs to display initially
+    return render_template('search.html', jobs=jobs)
 
 if __name__ == '__main__':
     with app.app_context():
