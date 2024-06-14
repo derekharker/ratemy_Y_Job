@@ -97,7 +97,15 @@ def review_success():
 
 @app.route('/search')
 def search():
-    return render_template('search.html')
+    jobs = Job.query.all()  # Fetch all jobs to display initially
+    return render_template('search.html', jobs=jobs)
+
+@app.route('/search_results', methods=['GET'])
+def search_results():
+    query = request.args.get('job_name')
+    jobs = Job.query.filter((Job.title.like(f'%{query}%')) | (Job.description.like(f'%{query}%'))).all()
+    reviews = Review.query.all()
+    return render_template('search_results.html', jobs=jobs, reviews=reviews)
 
 if __name__ == '__main__':
     with app.app_context():
