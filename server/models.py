@@ -3,11 +3,12 @@ from extensions import db
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(200), nullable=True)
+    department = db.Column(db.String(100), nullable=False)
+    reviews = db.relationship('Review', backref='job', lazy=True)
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)  # Keep this if you still want to reference the job table
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=True)
     job_title = db.Column(db.String(100), nullable=False)
     department = db.Column(db.String(100), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
