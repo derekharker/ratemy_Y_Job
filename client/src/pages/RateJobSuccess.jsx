@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import "./style.css"; // Assuming you have a CSS file to style the component
-
 const ReviewSuccess = () => {
   return (
     <div>
