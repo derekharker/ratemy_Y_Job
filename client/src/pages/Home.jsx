@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Box, Button, Stack } from "@mui/material";
 import WhiteLogo from "../assets/White Logo V4.jpg";
-import MainPageComputer from "../assets/Main Computer Picture.jpg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Hero from "../components/Hero";
 
 const RateMyYJob = () => {
   return (
@@ -32,11 +32,7 @@ const RateMyYJob = () => {
         flex="1"
         style={{ marginTop: "20px" }}
       >
-        <img
-          src={MainPageComputer}
-          alt="Main Page Computer"
-          style={{ width: "100%", height: "auto" }}
-        />
+        <Hero />
         <Link to="/search" style={{ alignSelf: "center", marginTop: "20px" }}>
           <Button className="btn btn-primary" variant="contained">
             Find a Job
