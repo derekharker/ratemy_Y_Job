@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import Select from "react-select";
-import axios from "axios";
+import { useState } from "react";
+import { Select, MenuItem, TextField, Button, Box, Stack } from "@mui/material";
 
 const RateMyJobReview = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -9,21 +8,13 @@ const RateMyJobReview = () => {
   const [supervisorRating, setSupervisorRating] = useState(1);
   const [comment, setComment] = useState("");
   const [pay, setPay] = useState("");
-  const [jobs, setJobs] = useState([]);
-  const [departments, setDepartments] = useState([]);
-
-  useEffect(() => {
-    // Fetch jobs and departments from an API or other data source
-    axios
-      .get("/api/jobs")
-      .then((response) => setJobs(response.data))
-      .catch((error) => console.error("Error fetching jobs:", error));
-
-    axios
-      .get("/api/departments")
-      .then((response) => setDepartments(response.data))
-      .catch((error) => console.error("Error fetching departments:", error));
-  }, []);
+  const jobs = [
+    "Software Engineer",
+    "Data Analyst",
+    "Product Manager",
+    "UX Designer",
+  ];
+  const departments = ["Engineering", "Data Science", "Product", "Design"];
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,97 +27,86 @@ const RateMyJobReview = () => {
       pay,
     };
     // Send review data to the server
-    axios
-      .post("/review", reviewData)
-      .then((response) => console.log("Review submitted:", response))
-      .catch((error) => console.error("Error submitting review:", error));
+    console.log("Review submitted:", reviewData);
   };
 
   return (
-    <div>
-      <a href="/">
-        <svg width="350" height="350">
-          <image
-            xlinkHref="/static/Blue Logo V2.svg"
-            width="350"
-            height="350"
-          />
-        </svg>
-      </a>
+    <Box sx={{ "& > :not(style)": { m: 1 } }}>
       <h1>Rate My Job Review</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="job_title">Job Title:</label>
-        <Select
-          className="js-example-basic-single"
-          id="job_title"
-          options={jobs.map((job) => ({ value: job, label: job }))}
-          onChange={(selectedOption) => setJobTitle(selectedOption.value)}
-          placeholder="Select or type..."
-          isSearchable
-          isClearable
-        />
+        <Stack direction="column" spacing={2}>
+          <TextField
+            id="job_title"
+            select
+            label="Job Title"
+            value={jobTitle}
+            onChange={(event) => setJobTitle(event.target.value)}
+            helperText="Please select your job title"
+          >
+            {jobs.map((job) => (
+              <MenuItem key={job} value={job}>
+                {job}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <label htmlFor="department">Department:</label>
-        <Select
-          className="js-example-basic-single"
-          id="department"
-          options={departments.map((department) => ({
-            value: department,
-            label: department,
-          }))}
-          onChange={(selectedOption) => setDepartment(selectedOption.value)}
-          placeholder="Select or type..."
-          isSearchable
-          isClearable
-        />
+          <TextField
+            id="department"
+            select
+            label="Department"
+            value={department}
+            onChange={(event) => setDepartment(event.target.value)}
+            helperText="Please select your department"
+          >
+            {departments.map((department) => (
+              <MenuItem key={department} value={department}>
+                {department}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <label htmlFor="rating">Rating:</label>
-        <input
-          type="number"
-          name="rating"
-          id="rating"
-          min="1"
-          max="5"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-          required
-        />
+          <TextField
+            id="rating"
+            label="Rating"
+            type="number"
+            InputProps={{ inputProps: { min: 1, max: 5 } }}
+            value={rating}
+            onChange={(event) => setRating(event.target.value)}
+          />
 
-        <label htmlFor="supervisor_rating">Supervisor Rating:</label>
-        <input
-          type="number"
-          name="supervisor_rating"
-          id="supervisor_rating"
-          min="1"
-          max="5"
-          value={supervisorRating}
-          onChange={(e) => setSupervisorRating(e.target.value)}
-          required
-        />
+          <TextField
+            id="supervisor_rating"
+            label="Supervisor Rating"
+            type="number"
+            InputProps={{ inputProps: { min: 1, max: 5 } }}
+            value={supervisorRating}
+            onChange={(event) => setSupervisorRating(event.target.value)}
+          />
 
-        <label htmlFor="comment">Comment:</label>
-        <textarea
-          name="comment"
-          id="comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          required
-        />
+          <TextField
+            id="comment"
+            label="Comment"
+            multiline
+            rows={4}
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+          />
 
-        <label htmlFor="pay">Pay:</label>
-        <input
-          type="number"
-          name="pay"
-          id="pay"
-          step="0.01"
-          value={pay}
-          onChange={(e) => setPay(e.target.value)}
-          required
-        />
+          <TextField
+            id="pay"
+            label="Pay"
+            type="number"
+            InputProps={{ inputProps: { step: "0.01" } }}
+            value={pay}
+            onChange={(event) => setPay(event.target.value)}
+          />
 
-        <button type="submit">Submit Review</button>
+          <Button variant="contained" type="submit">
+            Submit Review
+          </Button>
+        </Stack>
       </form>
-    </div>
+    </Box>
   );
 };
 
