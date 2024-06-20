@@ -14,7 +14,7 @@
     <h1>Search Jobs</h1>
     <form action="/search" method="GET">
         <label for="job_name">Job Name:</label>
-        <input type="text" id="job_name" name="job_name" value="{{ query }}" required>
+        <input type="text" id="job_name" name="job_name" required>
         <button type="submit">Search</button>
     </form>
     
@@ -29,7 +29,7 @@
                 <th>Details</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="job_list">
             {% for job in job_ratings %}
             <tr>
                 <td>{{ job.title }}</td>
@@ -41,5 +41,28 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        document.getElementById('job_name').addEventListener('input', function() {
+            let query = this.value;
+            fetch(`/autocomplete?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let tbody = document.getElementById('job_list');
+                    tbody.innerHTML = '';
+                    data.forEach(job => {
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${job.title}</td>
+                            <td>${job.average_rating}</td>
+                            <td>${job.total_ratings}</td>
+                            <td>${job.department}</td>
+                            <td><a href="/job/${job.id}">View Details</a></td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+        });
+    </script>
 </body>
 </html>
