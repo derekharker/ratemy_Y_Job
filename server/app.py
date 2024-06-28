@@ -93,7 +93,7 @@ def search():
 def autocomplete():
     query = request.args.get('query', '')
     job_ratings = get_sorted_jobs(query)
-    app.logger.info(job_ratings)  # Uncomment to see the job ratings in the console; for debugging purposes
+    # app.logger.info(job_ratings)  # Uncomment to see the job ratings in the console; for debugging purposes
     return jsonify(job_ratings)
 
 def get_sorted_jobs(query):

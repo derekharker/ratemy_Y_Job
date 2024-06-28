@@ -9,13 +9,11 @@ const SearchJobs = () => {
   };
 
   useEffect(() => {
-    console.log(jobName);
     if (jobName) {
       fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
         .then((response) => response.json())
         .then((data) => {
           setJobList(data);
-          console.log(data);
         });
     } else {
       setJobList([]);
