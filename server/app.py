@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from extensions import db
@@ -81,26 +81,44 @@ def review():
 def review_success():
     return render_template('review_success.html')
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('job_name', '')
-    jobs = Job.query.filter(
-        (Job.title.ilike(f'%{query}%')) | (Job.department.ilike(f'%{query}%'))
-    ).all()
+    job_ratings = get_sorted_jobs(query)
+    return render_template('search.html', job_ratings=job_ratings, query=query)
+
+@app.route('/autocomplete', methods=['GET'])
+def autocomplete():
+    query = request.args.get('query', '')
+    job_ratings = get_sorted_jobs(query)
+    return jsonify(job_ratings)
+
+def get_sorted_jobs(query):
+    jobs = Job.query.all()
 
     job_ratings = []
     for job in jobs:
         average_rating = db.session.query(func.avg(Review.rating)).filter_by(job_id=job.id).scalar()
         total_ratings = db.session.query(func.count(Review.id)).filter_by(job_id=job.id).scalar()
+
+        relevance = 0
+        if query.lower() in job.title.lower():
+            relevance += 2  # Higher weight for title match
+        if query.lower() in job.department.lower():
+            relevance += 1  # Lower weight for department match
+
         job_ratings.append({
             'id': job.id,
             'title': job.title,
             'department': job.department,
             'average_rating': round(average_rating, 2) if average_rating else 'No ratings',
-            'total_ratings': total_ratings
+            'total_ratings': total_ratings,
+            'relevance': relevance
         })
 
-    return render_template('search.html', job_ratings=job_ratings, query=query)
+    # Sort jobs by relevance and then by title as a secondary sort key
+    job_ratings.sort(key=lambda x: (-x['relevance'], x['title']))
+    return job_ratings
 
 @app.route('/job/<int:job_id>')
 def job_detail(job_id):
