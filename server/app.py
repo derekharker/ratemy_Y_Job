@@ -3,11 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from extensions import db
 from sqlalchemy.sql import func
-
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db?timeout=60'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+CORS(app);
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -91,6 +93,7 @@ def search():
 def autocomplete():
     query = request.args.get('query', '')
     job_ratings = get_sorted_jobs(query)
+    app.logger.info(job_ratings)  # Uncomment to see the job ratings in the console; for debugging purposes
     return jsonify(job_ratings)
 
 def get_sorted_jobs(query):

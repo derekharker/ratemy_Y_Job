@@ -1,34 +1,47 @@
 import { useState, useEffect } from "react";
 
 const SearchJobs = () => {
-  //TODO: Actually fix this!
-
   const [jobName, setJobName] = useState("");
-  const [jobs, setJobs] = useState([]);
+  const [jobList, setJobList] = useState([]);
 
-  const handleInputChange = (event) => {
-    setJobName(event.target.value);
+  const handleInputChange = (e) => {
+    setJobName(e.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Implement the search functionality here
-    // For example, you can fetch the jobs from an API based on jobName
-    // fetch(`/search_results?job_name=${jobName}`)
-    //     .then(response => response.json())
-    //     .then(data => setJobs(data));
-  };
-
-  // Use useEffect to fetch all jobs when the component mounts
   useEffect(() => {
-    // Fetch all jobs
-    // fetch('/api/all_jobs')
-    //     .then(response => response.json())
-    //     .then(data => setJobs(data));
-  }, []);
+    console.log(jobName);
+    if (jobName) {
+      fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setJobList(data);
+          console.log(data);
+        });
+    } else {
+      setJobList([]);
+    }
+  }, [jobName]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(`http://127.0.0.1:8000/search?job_name=${jobName}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setJobList(data);
+      });
+  };
 
   return (
     <div>
+      <a href="/">
+        <svg width="350" height="350">
+          <image
+            xlinkHref="/client/src/assets/Blue Logo V2.svg"
+            width="350"
+            height="350"
+          />
+        </svg>
+      </a>
       <h1>Search Jobs</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="job_name">Job Name:</label>
@@ -48,14 +61,22 @@ const SearchJobs = () => {
         <thead>
           <tr>
             <th>Title</th>
-            <th>Description</th>
+            <th>Overall Rating</th>
+            <th>Total Ratings</th>
+            <th>Department</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
-          {jobs.map((job, index) => (
-            <tr key={index}>
+          {jobList.map((job) => (
+            <tr key={job.id}>
               <td>{job.title}</td>
-              <td>{job.description}</td>
+              <td>{job.average_rating}</td>
+              <td>{job.total_ratings}</td>
+              <td>{job.department}</td>
+              <td>
+                <a href={`http://127.0.0.1:8000/job/${job.id}`}>View Details</a>
+              </td>
             </tr>
           ))}
         </tbody>
