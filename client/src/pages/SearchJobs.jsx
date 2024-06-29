@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/Blue Logo V2.svg"; // Adjust the path if necessary
 
 const SearchJobs = () => {
   const [jobName, setJobName] = useState("");
@@ -32,15 +33,11 @@ const SearchJobs = () => {
 
   return (
     <div>
-      <a href="/">
-        <svg width="350" height="350">
-          <image
-            xlinkHref="/client/src/assets/Blue Logo V2.svg"
-            width="350"
-            height="350"
-          />
-        </svg>
-      </a>
+      <header>
+        <a href="/">
+          <img src={logo} alt="Logo" width="350" height="350" />
+        </a>
+      </header>
       <h1>Search Jobs</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="job_name">Job Name:</label>
