@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const SearchJobs = () => {
   const [jobName, setJobName] = useState("");
@@ -73,7 +74,7 @@ const SearchJobs = () => {
               <td>{job.total_ratings}</td>
               <td>{job.department}</td>
               <td>
-                <a href={`http://127.0.0.1:8000/job/${job.id}`}>View Details</a>
+                <Link to={`/job/${job.id}`}>View Details</Link>
               </td>
             </tr>
           ))}
