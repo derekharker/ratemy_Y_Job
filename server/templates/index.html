@@ -15,63 +15,198 @@
             margin: 0;
             padding: 0;
         }
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+        header {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px;
+            background-color: white;
+            color: black;
+            margin-bottom: 0px;
         }
         .logo img {
-            width: 150px;
-            height: 150px;
+            width: 350px;
+            height: 120px;
         }
         .nav-links {
-            margin-top: 20px;
+            position: relative;
+            top: 20px;
+            right: 0;
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            gap: 100px;
+            padding-right: 180px;
+        }
+        .nav-links a {
+            color: #000;
+            font-family: Kantumruy;
+            font-size: 30px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            text-decoration: none;
+            position: relative; /* Added position relative */
+            z-index: 1; /* Added z-index to ensure dropdown is on top */
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1; /* Ensure dropdown is above other content */
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: #f9f9f9; /* Change background color on hover */
+        }
+        .dropdown .dropbtn {
+            display: flex;
+            align-items: center; /* Center items vertically */
+            cursor: pointer; /* Add cursor pointer to show interaction */
+        }
+        .dropdown .menu-arrow {
+            margin-left: 5px; /* Adjust spacing between text and arrow */
+            width: 20px; /* Adjust width of the arrow image */
+            height: auto; /* Maintain aspect ratio */
         }
         .btn {
             text-decoration: none;
             color: white;
             background-color: #003CA6;
             padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 18px;
+            border-radius: 30px;
+            text-align: center;
+            font-family: "Libre Baskerville";
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            display: flex;
+            width: 230px;
+            height: 40px;
+            flex-direction: column;
+            justify-content: center;
+            flex-shrink: 0;
+            text-shadow: none;
+            margin: 0 auto;
         }
         #rectangle {
             width: 1500px;
-            height: 600px; /* Adjusted to ensure some blue shows above and below the image */
+            height: 550px;
             background-color: #003CA6;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-top: 100px; /* Add margin to avoid overlapping with the logo */
+            margin-top: 10px;
         }
         .main-image {
             position: relative;
+            opacity: 0.7;
         }
         .main-image svg {
             display: block;
             margin: 0 auto;
         }
-        .content {
+        .header-content {
             position: absolute;
             text-align: center;
+            color: #FFF;
+            text-align: center;
+            font-family: Kantumruy;
+            font-size: 48px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.5;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .main-btn {
+            position: absolute;
+            text-align: center;
+            color: white;
         }
         .btn-review {
             margin-top: 20px;
         }
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+            padding: 0 80px; /* Adjust padding as needed */
+        }
+
+        .campus-image img {
+            max-width: 100%; /* Ensure image stays within its container */
+            margin-right: 100px;
+        }
+
+        .btn-wrapper {
+            text-align: center;
+            padding-left: 100px; /* Adjust left padding as needed */
+        }
+        .explore-text {
+            text-align: center;
+            font-family: Kantumruy;
+            font-size: 48px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.5;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
-    <!-- Logo -->
-    <a href='/'>
-      <svg width="350" height="350">
-          <image xlink:href="\static\White Logo V4.jpg" width="350" height="350" />
-      </svg>
-    </a>
+    <!-- Header -->
+    <header>
+        <!-- Logo -->
+        <div class="logo">
+            <a href='/'>
+                <img src="{{ url_for('static', filename='White Logo V4.jpg') }}" alt="Logo">
+            </a>
+        </div>
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <div class="dropdown">
+                <div class="dropbtn" onmouseover="openDropdown(this)" onmouseout="closeDropdown(this)">
+                    <a href="#" class="nav-link">Explore</a>
+                    <img class="menu-arrow" src="{{ url_for('static', filename='menuArrow 1.jpg') }}" alt="Menu Arrow">
+                </div>
+                <div class="dropdown-content" onmouseover="openDropdown(this.parentElement.querySelector('.dropbtn'))" onmouseout="closeDropdown(this.parentElement.querySelector('.dropbtn'))">
+                    <a href="/review">Rating</a>
+                    <a href="/search">Search</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <div class="dropbtn" onmouseover="openDropdown(this)" onmouseout="closeDropdown(this)">
+                    <a href="#" class="nav-link">Follow Us!</a>
+                    <img class="menu-arrow" src="{{ url_for('static', filename='menuArrow 1.jpg') }}" alt="Menu Arrow">
+                </div>
+                <div class="dropdown-content" onmouseover="openDropdown(this.parentElement.querySelector('.dropbtn'))" onmouseout="closeDropdown(this.parentElement.querySelector('.dropbtn'))">
+                    <a href="https://www.instagram.com/ratemy_yjob/">Instagram</a>
+                    More to come...
+                </div>
+            </div>
+        </div>
+    </header>
 
     <div id="rectangle">
         <div class="main-image">
@@ -79,14 +214,38 @@
                 <image xlink:href="{{ url_for('static', filename='Main Page Computer.svg') }}" width="1500" height="654" />
             </svg>
         </div>
-        <div class="content">
-            <h2>Know more about your job before you apply</h2>
-            <a href="/review" class="btn btn-review">Review</a>
+        <div class="header-content">
+            <div class="explore-text">
+                <h2>Know more about your job<br>before you apply</h2>
+            </div>
+            <a href="/review" class="btn btn-review">Rate My Job</a>
         </div>
     </div>
-    
-    <div class="nav-links">
-        <a href="/search" class="btn">Find a Job</a>
+    <div class="content-wrapper">
+        <!-- BYU Campus Picture -->
+        <div class="campus-image">
+            <img src="{{ url_for('static', filename='BYU Campus 1.jpg') }}">
+        </div>
+        
+        <!-- "Find a Job" button -->
+        <div class="btn-wrapper">
+            <h2>Explore Jobs at <br>Brigham Young University</h2>
+            <div class="btn btn-review">
+                <a href="/search" class="btn">Find a Job</a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function openDropdown(element) {
+            var dropdownContent = element.nextElementSibling;
+            dropdownContent.style.display = "block";
+        }
+
+        function closeDropdown(element) {
+            var dropdownContent = element.nextElementSibling;
+            dropdownContent.style.display = "none";
+        }
+    </script>
 </body>
 </html>
