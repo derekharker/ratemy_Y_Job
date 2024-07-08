@@ -4,7 +4,7 @@ import WhiteLogo from "../assets/White Logo V4.jpg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Hero from "../components/Hero";
 
-const RateMyYJob = () => {
+const Home = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <Stack
@@ -43,4 +43,4 @@ const RateMyYJob = () => {
   );
 };
 
-export default RateMyYJob;
+export default Home;

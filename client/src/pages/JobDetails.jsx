@@ -33,7 +33,6 @@ const JobDetails = () => {
       <h2>Department: {job.department}</h2>
       <h3>Average Rating: {averageRating}</h3>
       <h3>Average Supervisor Rating: {averageSupervisorRating}</h3>
-
       <h2>Reviews</h2>
       <ul>
         {reviews.map((review) => (
