@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
@@ -50,7 +51,7 @@ const Home = () => {
           <p style={{fontSize: "30px", fontFamily: 'Kantumruy'}}>Made by students like you!</p>
         </div>
       </div>
-    
+    <Footer/>
     </>
   )
 }

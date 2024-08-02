@@ -5,9 +5,9 @@ const Navbar = () => {
     <>
     <header className='nav-header'>
       <div className="logo">
-        <a href="/">
+        <Link to="/">
           <img src="/src/assets/White Logo V4.jpg" alt="Logo" />
-        </a>
+        </Link>
       </div>
 
       <div className="nav-links">
