@@ -199,3 +199,13 @@ flex-shrink: 0;
 .btn-find-job {
   padding-top: 50px;
 }
+
+/* Add this CSS to your stylesheet */
+.social-link {
+  color: inherit; /* Ensure the link inherits the color from its parent */
+  text-decoration: none; /* Remove underline if present */
+}
+
+.social-link:visited {
+  color: inherit; /* Ensure the color remains the same after visit */
+}
