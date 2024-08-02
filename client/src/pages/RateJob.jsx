@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Select, MenuItem, TextField, Button, Box, Stack } from "@mui/material";
+import Navbar from "../components/Navbar";
 
 const RateMyJobReview = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -31,6 +32,8 @@ const RateMyJobReview = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <Box sx={{ "& > :not(style)": { m: 1 } }}>
       <h1>Rate My Job Review</h1>
       <form onSubmit={handleSubmit}>
@@ -107,6 +110,7 @@ const RateMyJobReview = () => {
         </Stack>
       </form>
     </Box>
+    </>
   );
 };
 

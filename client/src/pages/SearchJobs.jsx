@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Blue Logo V2.svg"; // Adjust the path if necessary
+import Navbar from "../components/Navbar";
 
 const SearchJobs = () => {
   const [jobName, setJobName] = useState("");
@@ -33,6 +34,7 @@ const SearchJobs = () => {
 
   return (
     <div>
+      <Navbar/>
       <header>
         <a href="/">
           <img src={logo} alt="Logo" width="350" height="350" />
