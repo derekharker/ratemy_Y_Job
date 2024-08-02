@@ -1,10 +1,56 @@
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <>
     <Navbar/>
-    <h1>Home Page</h1>
+
+    <div id="rectangle">
+        <div className="main-image">
+            <img src="/src/assets/Main Page Computer.jpg" alt="Main Page Computer" className="main-img" />
+        </div>
+        <div className="header-content">
+            <div className="explore-text">
+                <h2>Know more about your job <br/> before you apply</h2>
+            </div>
+            <Link to="/rate" className="btn btn-review">Rate My Job</Link>
+        </div>
+    </div>
+
+    
+    <div className="content-wrapper">
+        {/* <!-- BYU Campus Picture --> */}
+        <div className="campus-image">
+            <img src="src/assets/BYU Campus.jpeg"/>
+        </div>
+        
+        {/* <!-- "Find a Job" button --> */}
+        <div style={{width: '100%', height: '100%', textAlign: 'center', paddingTop: '40px' }}>
+        <div style={{width: '100%', height: '100%', textAlign: 'center', color: 'black', fontSize: 50, fontFamily: 'Libre Baskerville',
+           fontWeight: '700', wordWrap: 'break-word'}}>Explore More Jobs at <br/>Brigham Young <br/> University
+        </div>
+            
+        <div className="btn-find-job">
+            <Link to="/search" className="btn">Find a Job</Link>
+        </div>
+    </div>
+
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ color: 'black', fontSize: 40, fontFamily: 'Inter', fontWeight: '600', wordWrap: 'break-word' }}>
+            Don’t worry...the cougar won’t find out
+            <p style={{ fontSize: 30 }}>Your ratings are always anonymous</p>
+            <img src="/src/assets/HidingCougar.png" alt="Hiding Cougar" style={{ marginTop: '10px' }} />
+          </div>
+        </div>
+        <div>
+          <img src="/src/assets/BYUShaka.png" alt="BYU Shaka" />
+          <p style={{fontSize: "30px", fontFamily: 'Kantumruy'}}>Made by students like you!</p>
+        </div>
+      </div>
+    
     </>
   )
 }
