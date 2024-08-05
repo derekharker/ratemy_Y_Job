@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/Blue Logo V2.svg"; // Adjust the path if necessary
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { Autocomplete, TextField, Button } from "@mui/material";
+
+
 
 const SearchJobs = () => {
   const [jobName, setJobName] = useState("");
   const [jobList, setJobList] = useState([]);
+  const jobs = [
+    "Software Engineer",
+    "Data Analyst",
+    "Product Manager",
+    "UX Designer",
+  ];
 
-  const handleInputChange = (e) => {
-    setJobName(e.target.value);
-  };
+
 
   useEffect(() => {
     if (jobName) {
@@ -36,49 +43,59 @@ const SearchJobs = () => {
     <div>
       <Navbar/>
       <header>
-        <a href="/">
-          <img src={logo} alt="Logo" width="350" height="350" />
-        </a>
       </header>
       <h1>Search Jobs</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="job_name">Job Name:</label>
-        <input
-          type="text"
-          id="job_name"
-          name="job_name"
-          value={jobName}
-          onChange={handleInputChange}
-          required
-        />
-        <button type="submit">Search</button>
+        <Autocomplete
+              id="job_title"
+              options={jobs}
+              value={jobName}
+              onChange={(event, newValue) => setJobName(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Job Title"
+                  helperText="Please select or type your job title"
+                />
+              )}
+              freeSolo
+            />
+        <Button variant="contained" type="submit">
+              Search
+            </Button>
       </form>
-
-      <h2>All Jobs</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Overall Rating</th>
-            <th>Total Ratings</th>
-            <th>Department</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobList.map((job) => (
-            <tr key={job.id}>
-              <td>{job.title}</td>
-              <td>{job.average_rating}</td>
-              <td>{job.total_ratings}</td>
-              <td>{job.department}</td>
-              <td>
-                <Link to={`/job/${job.id}`}>View Details</Link>
-              </td>
+      
+      {jobList.length > 0 && (
+        <>
+        <h2>All Jobs</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Overall Rating</th>
+              <th>Total Ratings</th>
+              <th>Department</th>
+              <th>Details</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {jobList.map((job) => (
+              <tr key={job.id}>
+                <td>{job.title}</td>
+                <td>{job.average_rating}</td>
+                <td>{job.total_ratings}</td>
+                <td>{job.department}</td>
+                <td>
+                  <Link to={`/job/${job.id}`}>View Details</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </>
+      )}
+      
+      <Footer/>
     </div>
   );
 };
