@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Select, MenuItem, TextField, Button, Box, Stack } from "@mui/material";
+import { TextField, Button, Box, Stack, Autocomplete } from "@mui/material";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const RateMyJobReview = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -35,38 +36,38 @@ const RateMyJobReview = () => {
     <>
     <Navbar/>
     <Box sx={{ "& > :not(style)": { m: 1 } }}>
-      <h1>Rate My Job Review</h1>
+      <h1>Job Review</h1>
       <form onSubmit={handleSubmit}>
         <Stack direction="column" spacing={2}>
-          <TextField
+          <Autocomplete
             id="job_title"
-            select
-            label="Job Title"
+            options={jobs}
             value={jobTitle}
-            onChange={(event) => setJobTitle(event.target.value)}
-            helperText="Please select your job title"
-          >
-            {jobs.map((job) => (
-              <MenuItem key={job} value={job}>
-                {job}
-              </MenuItem>
-            ))}
-          </TextField>
+            onChange={(event, newValue) => setJobTitle(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Job Title"
+                helperText="Please select your job title"
+              />
+            )}
+            freeSolo
+          />
 
-          <TextField
+          <Autocomplete
             id="department"
-            select
-            label="Department"
+            options={departments}
             value={department}
-            onChange={(event) => setDepartment(event.target.value)}
-            helperText="Please select your department"
-          >
-            {departments.map((department) => (
-              <MenuItem key={department} value={department}>
-                {department}
-              </MenuItem>
-            ))}
-          </TextField>
+            onChange={(event, newValue) => setDepartment(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Department"
+                helperText="Please select your department"
+              />
+            )}
+            freeSolo
+          />    
 
           <TextField
             id="rating"
@@ -110,6 +111,7 @@ const RateMyJobReview = () => {
         </Stack>
       </form>
     </Box>
+    <Footer/>
     </>
   );
 };

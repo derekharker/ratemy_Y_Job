@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { Container } from '@mui/material';
 
 const Navbar = () => {
   return (
-    <>
-    <header className='nav-header'>
+    <Container>
+    <header >
       <div className="logo">
         <Link to="/">
           <img src="/src/assets/White Logo V4.jpg" alt="Logo" />
@@ -31,7 +32,7 @@ const Navbar = () => {
         </div>
       </div>
     </header>
-    </>
+    </Container>
   )
 }
 

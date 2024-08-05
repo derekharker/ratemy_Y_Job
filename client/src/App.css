@@ -20,11 +20,6 @@ header {
   margin-bottom: 0px;
 }
 
-.logo img {
-  width: 350px;
-  height: 120px;
-}
-
 .nav-links {
   position: relative;
   top: 20px;
@@ -45,6 +40,30 @@ header {
   position: relative; /* Added position relative */
   z-index: 1; /* Added z-index to ensure dropdown is on top */
 }
+
+.header-content {
+  position: absolute;
+  text-align: center;
+  color: #FFF;
+  text-align: center;
+  font-family: Kantumruy;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* .nav-header {
+  margin-left: auto;
+  margin-right: auto
+} */
+
+.logo img {
+  width: 350px;
+  height: 120px;
+}
+
 
 .dropdown {
   position: relative;
@@ -142,18 +161,7 @@ header {
   height: 510px; /* Set the same height as the original SVG */
 }
 
-.header-content {
-  position: absolute;
-  text-align: center;
-  color: #FFF;
-  text-align: center;
-  font-family: Kantumruy;
-  font-size: 48px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 1.5;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
+
 .main-btn {
   position: absolute;
   text-align: center;
@@ -191,10 +199,7 @@ flex-shrink: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.nav-header {
-  margin-left: auto;
-  margin-right: auto
-}
+
 
 .btn-find-job {
   padding-top: 50px;
