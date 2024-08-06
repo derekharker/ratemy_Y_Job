@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Autocomplete, TextField, Button } from "@mui/material";
@@ -69,31 +68,7 @@ const SearchJobs = () => {
       {jobList.length > 0 && (
         <>
         <h2>All Jobs</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Overall Rating</th>
-              <th>Total Ratings</th>
-              <th>Department</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {jobList.map((job) => (
-              <tr key={job.id}>
-                <td>{job.title}</td>
-                <td>{job.average_rating}</td>
-                <td>{job.total_ratings}</td>
-                <td>{job.department}</td>
-                <td>
-                  <Link to={`/job/${job.id}`}>View Details</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <JobsTable/>
+        <JobsTable jobList={jobList}/>
         </>
       )}
       
