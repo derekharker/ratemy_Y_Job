@@ -1,10 +1,14 @@
-import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
+import { Link } from 'react-router-dom';
+
 
 const Navbar = () => {
   return (
-    <Container>
-    <header >
+    <Container
+    style={{minWidth: "1420px",
+      paddingLeft: "80px",
+      backgroundColor: "white"}}>
+    <header>
       <div className="logo">
         <Link to="/">
           <img src="/src/assets/White Logo V4.jpg" alt="Logo" />
@@ -33,6 +37,7 @@ const Navbar = () => {
       </div>
     </header>
     </Container>
+    
   )
 }
 

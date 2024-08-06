@@ -42,8 +42,6 @@ const SearchJobs = () => {
   return (
     <div>
       <Navbar/>
-      <header>
-      </header>
       <h1>Search Jobs</h1>
       <form onSubmit={handleSubmit}>
         <Autocomplete
@@ -71,8 +69,8 @@ const SearchJobs = () => {
         <JobsTable jobList={jobList}/>
         </>
       )}
+      {jobList.length > 0 ? (<Footer/>) : (<Footer style={{position: "fixed", bottom:0, minWidth: "1420px",background: '#0D579C'}}/>) }
       
-      <Footer/>
     </div>
   );
 };
