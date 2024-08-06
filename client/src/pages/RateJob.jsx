@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Button, Box, Stack, Autocomplete } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -11,15 +11,26 @@ const RateMyJobReview = () => {
   const [supervisorRating, setSupervisorRating] = useState(1);
   const [comment, setComment] = useState("");
   const [pay, setPay] = useState("");
-  const jobs = [
-    "Software Engineer",
-    "Data Analyst",
-    "Product Manager",
-    "UX Designer",
-  ];
   const navigate = useNavigate()
+  const [dropdownJobs, setDropdownJobs] = useState([])
+  const [dropdownDepartments, setDropdownDepartments] = useState([])
+  
+  useEffect(() => {
+    
+    fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        var mappedJobs = data.map(item => item.title);
+        setDropdownJobs(mappedJobs);
+        var mappedDepartments = data.map(item => item.department);
+        setDropdownDepartments(mappedDepartments);
+        
+      });
+    
+  }, []);
 
-  const departments = ["Engineering", "Data Science", "Product", "Design"];
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,7 +75,7 @@ const RateMyJobReview = () => {
           <Stack direction="column" spacing={2}>
             <Autocomplete
               id="job_title"
-              options={jobs}
+              options={dropdownJobs}
               value={jobTitle}
               onChange={(event, newValue) => setJobTitle(newValue)}
               renderInput={(params) => (
@@ -80,7 +91,7 @@ const RateMyJobReview = () => {
 
             <Autocomplete
               id="department"
-              options={departments}
+              options={dropdownDepartments}  //Eventually have departments show up based on what job was input
               value={department}
               onChange={(event, newValue) => setDepartment(newValue)}
               renderInput={(params) => (

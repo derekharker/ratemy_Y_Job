@@ -12,9 +12,6 @@ const SearchJobs = () => {
   const [jobList, setJobList] = useState([]);
   const [dropdownJobs, setDropdownJobs] = useState([])
   
-
-  
-
   useEffect(() => {
     
     fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
