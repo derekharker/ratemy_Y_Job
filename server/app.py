@@ -37,6 +37,7 @@ def index():
 
 @app.route('/review', methods=['GET', 'POST'])
 def review():
+    print(f"This is the json that came in: {request.json}")
     predefined_departments = [ 'Aerospace Studies', 'Alumni Aspen Grove', 'Athletics', 'Ballard Center', 'Biology', 'Brand & Creative',
         'BYU Security', 'BYU Store Campus Store', 'BYUB Operations', 'Campus Life Facilities', 'CE Multimedia Services',
         'Communications', 'Cougareat', 'Custodial', 'Dean\'s Office Education', 'Dean\'s Office FHSS', 'Dining Services',
@@ -48,12 +49,12 @@ def review():
     predefined_job_list = ['Software Trainer', 'Makerspace']
 
     if request.method == 'POST':
-        job_title = request.form['job_title']
-        department = request.form['department']
-        rating = request.form['rating']
-        supervisor_rating = request.form['supervisor_rating']
-        comment = request.form['comment']
-        pay = request.form['pay']
+        job_title = request.json['jobTitle']
+        department = request.json['department']
+        rating = request.json['rating']
+        supervisor_rating = request.json['supervisorRating']
+        comment = request.json['comment']
+        pay = request.json['pay']
 
         job = Job.query.filter_by(title=job_title, department=department).first()
         if not job and job_title != "Other":
@@ -74,10 +75,12 @@ def review():
         )
         db.session.add(new_review)
         db.session.commit()
-        return redirect("/review/success")
+        return jsonify({"Message: ": "Review Submitted Successfully!"}), 200
+        
 
     else:
-        return render_template('review.html', jobs=predefined_job_list, departments=predefined_departments)
+        return jsonify({"Message: ": "Not sure why you're doing a GET method..."}), 200
+        # return render_template('review.html', jobs=predefined_job_list, departments=predefined_departments)
 
 @app.route('/review/success')
 def review_success():

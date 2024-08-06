@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Autocomplete, TextField, Button } from "@mui/material";
@@ -10,27 +10,22 @@ import JobsTable from "../components/JobsTable";
 const SearchJobs = () => {
   const [jobName, setJobName] = useState("");
   const [jobList, setJobList] = useState([]);
-  const jobs = [
-    "Software Engineer",
-    "Data Analyst",
-    "Product Manager",
-    "UX Designer",
-  ];
+  const [dropdownJobs, setDropdownJobs] = useState([])
+  
 
+  
 
-
-  // useEffect(() => {
-  //   if (jobName) {
-  //     console.log(jobName)
-  //     fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setJobList(data);
-  //       });
-  //   } else {
-  //     setJobList([]);
-  //   }
-  // }, [jobName]);
+  useEffect(() => {
+    
+    fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        var mappedJobs = data.map(item => item.title);
+        setDropdownJobs(mappedJobs);
+      });
+    
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +44,7 @@ const SearchJobs = () => {
       <form onSubmit={handleSubmit}>
         <Autocomplete
               id="job_title"
-              options={jobs}
+              options={dropdownJobs}
               value={jobName}
               onChange={(event, newValue) => setJobName(newValue)}
               renderInput={(params) => (

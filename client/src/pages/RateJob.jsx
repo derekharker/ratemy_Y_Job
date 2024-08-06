@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextField, Button, Box, Stack, Autocomplete } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 const RateMyJobReview = () => {
   const [jobTitle, setJobTitle] = useState(null);
@@ -16,9 +17,11 @@ const RateMyJobReview = () => {
     "Product Manager",
     "UX Designer",
   ];
+  const navigate = useNavigate()
+
   const departments = ["Engineering", "Data Science", "Product", "Design"];
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const reviewData = {
       jobTitle,
@@ -30,7 +33,27 @@ const RateMyJobReview = () => {
     };
     // Send review data to the server
     console.log("Review submitted:", reviewData);
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/review`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reviewData),
+      });
+      console.log("THis is the response: ", response.json)
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      navigate("/success")
+      
+    } catch (error) {
+      console.log("Error attempting to submit the review or recieve stuff afterwards", error);
+    }
   };
+
 
   return (
     <>
@@ -49,6 +72,7 @@ const RateMyJobReview = () => {
                   {...params}
                   label="Job Title"
                   helperText="Please select or type your job title"
+                  onChange={(e) => setJobTitle(e.target.value)}
                 />
               )}
               freeSolo
@@ -64,6 +88,7 @@ const RateMyJobReview = () => {
                   {...params}
                   label="Department"
                   helperText="Please select or type your department"
+                  onChange={(e) => setDepartment(e.target.value)}
                 />
               )}
               freeSolo
@@ -105,7 +130,7 @@ const RateMyJobReview = () => {
               onChange={(event) => setPay(Number(event.target.value))}
             />
 
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={!jobTitle || !department || !pay}>
               Submit Review
             </Button>
           </Stack>
