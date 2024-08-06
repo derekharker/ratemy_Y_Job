@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import RateJobSuccess from "./pages/RateJobSuccess";
 import SearchJobs from "./pages/SearchJobs";
 import RateJob from "./pages/RateJob";
-import SearchResults from "./pages/SearchResults";
 import JobDetails from "./pages/JobDetails";
 import "./App.css";
 
@@ -15,7 +14,6 @@ export default function App() {
       <Route path="/job/:jobId" element={<JobDetails />} />
       <Route path="/success" element={<RateJobSuccess />} />
       <Route path="/rate" element={<RateJob />} />
-      <Route path="/results" element={<SearchResults />} />
     </Routes>
   );
 }

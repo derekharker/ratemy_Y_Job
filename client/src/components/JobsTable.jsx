@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Link } from 'react-router-dom';
 
 // function createData(job, rating, totalRatings, department, details) {
 //   return {job, rating, totalRatings, department, details};
@@ -31,11 +32,11 @@ export default function JobsTable({ jobList }) {
         <TableBody>
           {jobList.map((job) => (
             <TableRow
-              key={job.title}
+              key={job.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-              {job.title}
+              <TableCell component="th" scope="row"><Link to={`/job/${job.id}`}>{job.title}</Link>
+              
               </TableCell>
               <TableCell align="right">{job.average_rating}</TableCell>
               <TableCell align="right">{job.total_ratings}</TableCell>

@@ -130,15 +130,38 @@ def job_detail(job_id):
     average_rating = db.session.query(func.avg(Review.rating)).filter_by(job_id=job.id).scalar()
     average_supervisor_rating = db.session.query(func.avg(Review.supervisor_rating)).filter_by(job_id=job.id).scalar()
     
-    return render_template('job_detail.html', job=job, reviews=reviews, 
-                           average_rating=average_rating, 
-                           average_supervisor_rating=average_supervisor_rating)
+    reviews_list = [
+        {
+            "id": review.id,
+            "rating": review.rating,
+            "supervisor_rating": review.supervisor_rating,
+            "pay": review.pay,
+            "comment": review.comment
+        } for review in reviews
+    ]
+
+    job_info = {
+        "job": {
+            "title": job.title,
+            "department": job.department,
+        },
+        "reviews": reviews_list,
+        "average_rating": average_rating,
+        "average_supervisor_rating": average_supervisor_rating,
+    }
+
+    return jsonify(job_info)
+    
+    # return render_template('job_detail.html', job=job, reviews=reviews, 
+    #                        average_rating=average_rating, 
+    #                        average_supervisor_rating=average_supervisor_rating)
 
 @app.route('/search_results', methods=['GET'])
 def search_results():
     query = request.args.get('job_name')
     jobs = Job.query.filter((Job.title.like(f'%{query}%')) | (Job.department.like(f'%{query}%'))).all()
     reviews = Review.query.all()
+
     return render_template('search_results.html', jobs=jobs, reviews=reviews)
 
 if __name__ == '__main__':

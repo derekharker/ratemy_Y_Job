@@ -6,6 +6,7 @@ import JobsTable from "../components/JobsTable";
 
 
 
+
 const SearchJobs = () => {
   const [jobName, setJobName] = useState("");
   const [jobList, setJobList] = useState([]);

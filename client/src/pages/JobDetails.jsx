@@ -14,6 +14,7 @@ const JobDetails = () => {
       try {
         const response = await fetch(`http://127.0.0.1:8000/job/${jobId}`);
         const data = await response.json();
+        console.log(data)
 
         setJob(data.job);
         setReviews(data.reviews);
@@ -29,7 +30,7 @@ const JobDetails = () => {
 
   return (
     <div>
-      <h1>{job.title}</h1>
+      <h1>Job Title: {job.title}</h1>
       <h2>Department: {job.department}</h2>
       <h3>Average Rating: {averageRating}</h3>
       <h3>Average Supervisor Rating: {averageSupervisorRating}</h3>
