@@ -67,10 +67,10 @@ const SearchJobs = () => {
         <>
         <h2>All Jobs</h2>
         <JobsTable jobList={jobList}/>
+        <p style={{paddingBottom: "20px"}}></p>
         </>
       )}
       {jobList.length > 0 ? (<Footer/>) : (<Footer style={{position: "fixed", bottom:0, minWidth: "1420px",background: '#0D579C'}}/>) }
-      
     </div>
   );
 };
