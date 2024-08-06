@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Autocomplete, TextField, Button } from "@mui/material";
@@ -18,21 +18,23 @@ const SearchJobs = () => {
 
 
 
-  useEffect(() => {
-    if (jobName) {
-      fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setJobList(data);
-        });
-    } else {
-      setJobList([]);
-    }
-  }, [jobName]);
+  // useEffect(() => {
+  //   if (jobName) {
+  //     console.log(jobName)
+  //     fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setJobList(data);
+  //       });
+  //   } else {
+  //     setJobList([]);
+  //   }
+  // }, [jobName]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://127.0.0.1:8000/search?job_name=${jobName}`)
+    console.log({jobName});
+    fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
       .then((response) => response.json())
       .then((data) => {
         setJobList(data);
@@ -54,6 +56,7 @@ const SearchJobs = () => {
                   {...params}
                   label="Job Title"
                   helperText="Please select or type your job title"
+                  onChange={(e) => setJobName(e.target.value)} 
                 />
               )}
               freeSolo
