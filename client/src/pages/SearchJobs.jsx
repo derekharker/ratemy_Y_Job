@@ -17,8 +17,8 @@ const SearchJobs = () => {
     fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
       .then((response) => response.json())
       .then((data) => {
-        var mappedJobs = data.map(item => item.title);
-        setDropdownJobs(mappedJobs);
+        var mappedJobWithDepartment = data.map(item => (item.title +  " " + "(" + item.department + ")"));
+        setDropdownJobs(mappedJobWithDepartment)
       });
     
   }, []);

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Container } from '@mui/material';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Button from '@mui/material/Button';
 
 const JobDetails = () => {
   const { jobId } = useParams();
@@ -36,10 +37,10 @@ const JobDetails = () => {
       <Navbar />
       <Container style={{backgroundColor:"#0D579C", borderRadius: "8px", paddingTop: "1px"}}>
       <Container>
-      <h1>{job.title}</h1>
-      <h2>{job.department}</h2>
-      <h3>Average Rating: {averageRating}</h3>
-      <h3>Average Supervisor Rating: {averageSupervisorRating}</h3>
+      <h1 style={{fontFamily:"Libre Baskerville" }}>{job.title}</h1>
+      <h2 style={{fontFamily:"Libre Baskerville" }}>{job.department}</h2>
+      <h3 style={{fontFamily:"Libre Baskerville" }}>Average Rating: {averageRating}</h3>
+      <h3 style={{fontFamily:"Libre Baskerville" }}>Average Supervisor Rating: {averageSupervisorRating}</h3>
       </Container>
       <h2>Reviews</h2>
       <ul style={{paddingInlineStart:"0px"}}>
@@ -61,19 +62,23 @@ const JobDetails = () => {
             >
               <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ textAlign: 'left' }}>
-                  <h3 style={{ color: "black" }}>Overall Rating: {review.rating}</h3>
-                  <h3 style={{ color: "black" }}>Supervisor Rating: {review.supervisor_rating}</h3>
-                  <h3 style={{ color: "black" }}>Pay: ${review.pay}/hr</h3>
+                  <h3 style={{ color: "black", fontFamily:"Libre Baskerville"  }}>Overall Rating: {review.rating}</h3>
+                  <h3 style={{ color: "black", fontFamily:"Libre Baskerville"  }}>Supervisor Rating: {review.supervisor_rating}</h3>
+                  <h3 style={{ color: "black", fontFamily:"Libre Baskerville"  }}>Pay: ${review.pay}/hr</h3>
                 </div>
                 <div style={{ textAlign: 'center', margin: 'auto', }}>
-                  <h4 style={{ color: "black" }}>{review.comment}</h4>
+                  <h4 style={{ color: "black", fontFamily:"Libre Baskerville"  }}>{review.comment}</h4>
                 </div>
               </div>
             </Container>
           </li>
         ))}
       </ul>
-      <Link to="/search">Back to Search</Link>
+      <Link to="/search"><Button 
+      variant="contained"
+      sx={{ backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'darkgrey' }, fontFamily:"Libre Baskerville" }}
+      >Back to Search Page</Button></Link>
+      <p style={{paddingBottom:"0px"}}></p>
       <Footer />
       </Container>
     </>

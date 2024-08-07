@@ -14,17 +14,18 @@ const RateMyJobReview = () => {
   const navigate = useNavigate()
   const [dropdownJobs, setDropdownJobs] = useState([])
   const [dropdownDepartments, setDropdownDepartments] = useState([])
+
   
   useEffect(() => {
     
     fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        var mappedJobs = data.map(item => item.title);
-        setDropdownJobs(mappedJobs);
         var mappedDepartments = data.map(item => item.department);
         setDropdownDepartments(mappedDepartments);
+        var mappedJobWithDepartment = data.map(item => (item.title +  " " + "(" + item.department + ")"));
+        setDropdownJobs(mappedJobWithDepartment)
+      
         
       });
     
@@ -52,7 +53,7 @@ const RateMyJobReview = () => {
         },
         body: JSON.stringify(reviewData),
       });
-      console.log("THis is the response: ", response.json)
+      console.log("This is the response: ", response.json)
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -69,8 +70,13 @@ const RateMyJobReview = () => {
   return (
     <>
       <Navbar />
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <h1>Job Review</h1>
+      <Box sx={{ "& > :not(style)": { m: 1 }, paddingBottom:"20px" }}>
+      <div style={{width: '100%', textAlign: 'center'}}>
+        <span style={{color: 'black', fontSize: 48, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word'}}>
+          Rate </span>
+          <span style={{color: 'black', fontSize: 48, fontFamily: 'Inter', fontWeight: '400', textDecoration: 'underline', wordWrap: 'break-word'}}>
+            your</span>
+            <span style={{color: 'black', fontSize: 48, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word'}}>  Y-job</span></div>
         <form onSubmit={handleSubmit}>
           <Stack direction="column" spacing={2}>
             <Autocomplete
