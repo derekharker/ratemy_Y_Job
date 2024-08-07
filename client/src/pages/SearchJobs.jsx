@@ -17,7 +17,6 @@ const SearchJobs = () => {
     fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         var mappedJobs = data.map(item => item.title);
         setDropdownJobs(mappedJobs);
       });
@@ -66,7 +65,7 @@ const SearchJobs = () => {
         <p style={{paddingBottom: "20px"}}></p>
         </>
       )}
-      {jobList.length > 0 ? (<Footer/>) : (<Footer style={{position: "fixed", bottom:0, minWidth: "1420px",background: '#0D579C'}}/>) }
+      {jobList.length > 0 ? (<Footer/>) : (<Footer style={{position: "fixed", bottom:0, minWidth: "1300px",background: '#0D579C', borderRadius: "8px"}}/>) }
     </div>
   );
 };

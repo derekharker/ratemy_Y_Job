@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <Container
-    style={{minWidth: "1420px",
-      paddingLeft: "80px",
-      backgroundColor: "white"}}>
-    <header>
+    style={{
+            minWidth: "1300px",
+            maxWidth: "1300px",
+            paddingLeft: "120px",
+            backgroundColor: "white"}}>
+    <header >
       <div className="logo">
         <Link to="/">
           <img src="/src/assets/White Logo V4.jpg" alt="Logo" />

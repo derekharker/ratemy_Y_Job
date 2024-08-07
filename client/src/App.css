@@ -26,7 +26,7 @@ header {
   right: 0;
   display: flex;
   gap: 100px;
-  padding-right: 180px;
+  padding-right: 100px;
 }
 
 .nav-links a {
