@@ -106,6 +106,8 @@ def get_sorted_jobs(query):
     for job in jobs:
         average_rating = db.session.query(func.avg(Review.rating)).filter_by(job_id=job.id).scalar()
         total_ratings = db.session.query(func.count(Review.id)).filter_by(job_id=job.id).scalar()
+        average_supervisor_rating = db.session.query(func.avg(Review.supervisor_rating)).filter_by(job_id=job.id).scalar()
+        
 
         relevance = 0
         if "(" in query:
@@ -119,14 +121,17 @@ def get_sorted_jobs(query):
         if jobDepartment.lower() in job.department.lower():
             relevance += 1  # Lower weight for department match
 
-        job_ratings.append({
-            'id': job.id,
-            'title': job.title,
-            'department': job.department,
-            'average_rating': round(average_rating, 2) if average_rating else 'No ratings',
-            'total_ratings': total_ratings,
-            'relevance': relevance
-        })
+        if relevance > 1:
+            job_ratings.append({
+                'id': job.id,
+                'title': job.title,
+                'department': job.department,
+                'average_rating': round(average_rating, 2) if average_rating else 'No ratings',
+                'total_ratings': total_ratings,
+                'relevance': relevance,
+                'average_supervisor_rating': average_supervisor_rating,
+            })
+
 
     # Sort jobs by relevance and then by title as a secondary sort key
     job_ratings.sort(key=lambda x: (-x['relevance'], x['title']))

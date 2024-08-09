@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TextField, Button, Box, Stack, Autocomplete } from "@mui/material";
+import { TextField, Button, Box, Stack, Autocomplete, Rating } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
@@ -119,6 +119,11 @@ const RateMyJobReview = () => {
               value={rating}
               onChange={(event) => setRating(Number(event.target.value))}
             />
+            <Rating label="Rating"
+              type="number"
+              
+              value={rating}
+              onChange={(event) => setRating(Number(event.target.value))}/>
 
             <TextField
               id="supervisor_rating"
@@ -147,7 +152,7 @@ const RateMyJobReview = () => {
               onChange={(event) => setPay(Number(event.target.value))}
             />
 
-            <Button variant="contained" type="submit" disabled={!jobTitle || !department || !pay}>
+            <Button variant="contained" type="submit" disabled={!jobTitle || !department || !pay} style={{backgroundColor: "#0D579C"}}>
               Submit Review
             </Button>
           </Stack>

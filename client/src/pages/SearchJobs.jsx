@@ -1,10 +1,8 @@
 import { useState, useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Autocomplete, TextField, Button } from "@mui/material";
+import { Autocomplete, TextField,} from "@mui/material";
 import JobsTable from "../components/JobsTable";
-
-
 
 
 const SearchJobs = () => {
@@ -29,8 +27,9 @@ const SearchJobs = () => {
       .then((response) => response.json())
       .then((data) => {
         setJobList(data) 
+        console.log(data);
       });
-    
+      
   }, [jobName]);
 
   return (
