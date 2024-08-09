@@ -18,7 +18,7 @@ const SearchJobs = () => {
       .then((response) => response.json())
       .then((data) => {
         var mappedJobWithDepartment = data.map(item => (item.title +  " " + "(" + item.department + ")"));
-        setDropdownJobs(mappedJobWithDepartment)
+        setDropdownJobs(mappedJobWithDepartment) 
       });
     
   }, []);
@@ -30,6 +30,7 @@ const SearchJobs = () => {
       .then((response) => response.json())
       .then((data) => {
         setJobList(data);
+        console.log(data)
       });
   };
 
@@ -60,7 +61,6 @@ const SearchJobs = () => {
       
       {jobList.length > 0 && (
         <>
-        <h2>All Jobs</h2>
         <JobsTable jobList={jobList}/>
         <p style={{paddingBottom: "20px"}}></p>
         </>

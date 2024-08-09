@@ -37,12 +37,12 @@ const JobDetails = () => {
       <Navbar />
       <Container style={{backgroundColor:"#0D579C", borderRadius: "8px", paddingTop: "1px"}}>
       <Container>
-      <h1 style={{fontFamily:"Libre Baskerville" }}>{job.title}</h1>
-      <h2 style={{fontFamily:"Libre Baskerville" }}>{job.department}</h2>
-      <h3 style={{fontFamily:"Libre Baskerville" }}>Average Rating: {averageRating}</h3>
-      <h3 style={{fontFamily:"Libre Baskerville" }}>Average Supervisor Rating: {averageSupervisorRating}</h3>
+      <h1 style={{fontFamily: 'Inter', color:"white"}}>{job.title}</h1>
+      <h2 style={{fontFamily: 'Inter', color:"white"}}>{job.department}</h2>
+      <h3 style={{fontFamily: 'Inter', color:"white" }}>Average Rating: {averageRating}</h3>
+      <h3 style={{fontFamily: 'Inter' , color:"white"}}>Average Supervisor Rating: {averageSupervisorRating}</h3>
       </Container>
-      <h2>Reviews</h2>
+      <h2 >Reviews</h2>
       <ul style={{paddingInlineStart:"0px"}}>
         {reviews.map((review) => (
           <li key={review.id} style={{ listStyleType: 'none'}}>

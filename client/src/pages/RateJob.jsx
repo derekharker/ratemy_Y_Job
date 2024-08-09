@@ -77,7 +77,7 @@ const RateMyJobReview = () => {
           <span style={{color: 'black', fontSize: 48, fontFamily: 'Inter', fontWeight: '400', textDecoration: 'underline', wordWrap: 'break-word'}}>
             your</span>
             <span style={{color: 'black', fontSize: 48, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word'}}>  Y-job</span></div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{}}>
           <Stack direction="column" spacing={2}>
             <Autocomplete
               id="job_title"
