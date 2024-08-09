@@ -14,7 +14,7 @@ const SearchJobs = () => {
   
   useEffect(() => {
     
-    fetch(`http://127.0.0.1:8000/autocomplete?query=software`)
+    fetch(`http://127.0.0.1:8000/autocomplete?query=a`)
       .then((response) => response.json())
       .then((data) => {
         var mappedJobWithDepartment = data.map(item => (item.title +  " " + "(" + item.department + ")"));
@@ -23,22 +23,21 @@ const SearchJobs = () => {
     
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({jobName});
+  useEffect(() => {
+    
     fetch(`http://127.0.0.1:8000/autocomplete?query=${jobName}`)
       .then((response) => response.json())
       .then((data) => {
-        setJobList(data);
-        console.log(data)
+        setJobList(data) 
       });
-  };
+    
+  }, [jobName]);
 
   return (
     <div>
       <Navbar/>
       <h1>Search Jobs</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={() => console.log("Submitted")} style={{paddingBottom:"30px"}}>
         <Autocomplete
               id="job_title"
               options={dropdownJobs}
@@ -54,9 +53,6 @@ const SearchJobs = () => {
               )}
               freeSolo
             />
-        <Button variant="contained" type="submit">
-              Search
-            </Button>
       </form>
       
       {jobList.length > 0 && (

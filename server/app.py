@@ -108,8 +108,12 @@ def get_sorted_jobs(query):
         total_ratings = db.session.query(func.count(Review.id)).filter_by(job_id=job.id).scalar()
 
         relevance = 0
-        jobName, jobDepartment = query.rsplit(" (", 1)
-        jobDepartment = jobDepartment.rsplit(")")[0]
+        if "(" in query:
+            jobName, jobDepartment = query.rsplit(" (", 1)
+            jobDepartment = jobDepartment.rsplit(")")[0]
+        else:
+            jobName = query
+            jobDepartment = ""
         if jobName.lower() in job.title.lower():
             relevance += 2  # Higher weight for title match
         if jobDepartment.lower() in job.department.lower():
